@@ -58,7 +58,6 @@ class RImage(Resource):
 
     def put(self, id):
         d = request.get_json(force=True)
-        print(d)
         temp = Image(name=d['name'], img_base64=d['image'], date=d['date'])
         db_session.add(temp)
         db_session.flush()
