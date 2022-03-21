@@ -53,7 +53,7 @@ class Image(Base):
 class RImage(Resource):
     def get(self, id):
         img = Image.query.get(id)
-        return jsonify(img)
+        return img.serialize()
 
     def put(self, id):
         d = request.get_json(force=True)
@@ -61,7 +61,7 @@ class RImage(Resource):
         temp = Image(name=d['name'], img_base64=d['image'], date=d['date'])
         db_session.add(temp)
         db_session.flush()
-        return jsonify(temp)
+        return temp.serialize()
 
     def delete(self, id):
         temp = Image.query.get(id)
