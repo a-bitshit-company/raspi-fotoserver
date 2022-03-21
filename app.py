@@ -91,10 +91,9 @@ def init_db(): # this function is not called from script, execute from python sh
     img = Image(id=0, name="htl_logo.png", img_base64=encode_base64("static/htl_logo.png"), date=func.now())
     db_session.begin()
     db_session.add(img)
-    db_session.commit() #
+    db_session.commit()
 
 if __name__ == '__main__':
-    init_db()
     api.run()
     Base.metadata.create_all(bind=engine)
     app.run()
