@@ -47,8 +47,9 @@ class Image(Base):
     def serialize(self):
         return {'id' : self.id,
                 'name':  self.name,
-                'img_base64' : self.img_base64,
-                'date' : self.date}
+                'date': str(self.date),
+                'img_base64' : self.img_base64
+                }
 
 class RImage(Resource):
     def get(self, id):
