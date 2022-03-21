@@ -71,8 +71,7 @@ class RImage(Resource):
         db_session.flush()
         return jsonify({'message': '%d deleted' % id})
 
-
-api.add_resource(Image, '/image/<int:id>')
+api.add_resource(RImage, '/image/<int:id>')
 
 @app.route('/')
 def index():
@@ -94,6 +93,5 @@ def init_db(): # this function is not called from script, execute from python sh
     db_session.commit()
 
 if __name__ == '__main__':
-    api.run()
     Base.metadata.create_all(bind=engine)
     app.run()
