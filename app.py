@@ -13,17 +13,10 @@ db_session = scoped_session(sessionmaker(autocommit=True, autoflush=True, bind=e
 Base.query = db_session.query_property() #Dadurch hat jedes Base - Objekt (also auch ein Millionaire) ein Attribut query für Abfragen
 app = Flask(__name__)
 
-def encode_base64(fName):
-    with open(fName, 'rb') as file:
-        binary_file_data = file.read()
-        base64_encoded_data = base64.b64encode(binary_file_data)
-        return base64_encoded_data.decode('utf-8')
-
-def decode_Base64(fName, data):
-    data_base64 = data.encode('utf-8')
-    with open(fName, 'wb') as file:
-        decoded_data = base64.decodebytes(data_base64)
-        file.write(decoded_data)
+def encode_base64(file):
+    binary_file_data = file.read()
+    base64_encoded_data = base64.b64encode(binary_file_data)
+    return base64_encoded_data.decode('utf-8')
 
 class Image(Base):
     __tablename__ = 'images'  # Abbildung auf diese Tabelle
@@ -41,10 +34,18 @@ class Image(Base):
 
 @app.route('/')
 def index():
-    str = '<h1> test </h1>\n'
-    str += '<img src="data:image/png;base64,'
-    str += Image.query.get(0).img_base64
-    str += '" />'
+    str = '<!DOCTYPE html>\n<html>\n<head>\n<title>Fotoserver</title>\n</head>\n<body>'
+    str += '<h1> Images </h1>\n'
+    str +='<div id="images">\n'
+
+    for img in db_session.query(Image):
+        str += '<img src="data:image/png;base64,'
+        str += img.img_base64
+        str += '" />\n'
+
+    str += '</div>'
+    str += '</body>\n</html>'
+
     return str
 
 @app.teardown_appcontext
@@ -53,7 +54,7 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 def init_db(): # this function is not called from script, execute from python shell to reset sqlite file
-    img = Image(id=0, name="htl_logo.png", img_base64=encode_base64("static/htl_logo.png"), date=func.now())
+    img = Image(id=0, name="htl_logo.png", img_base64=encode_base64(open("static/htl_logo.png", 'rb')), date=func.now())
     db_session.begin()
     db_session.add(img)
     db_session.commit() #
