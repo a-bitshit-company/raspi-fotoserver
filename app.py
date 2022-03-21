@@ -1,10 +1,20 @@
 from flask import Flask, jsonify, render_template
+from flask_restful import Resource
 from sqlalchemy import Column, Integer, Text, DateTime, Sequence
 from sqlalchemy import create_engine,  or_
+from sqlalchemy.event import api
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.expression import func
 import base64
+import os
+from flask import Flask, request,jsonify, send_from_directory
+from flask_restful import Resource, Api
+from werkzeug.utils import secure_filename
+
+import werkzeug.utils
+
+FOLDER = '/home/user/fotoserver'
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -12,6 +22,7 @@ engine = create_engine('sqlite:///sqlite/fotoserver.sqlite3')
 db_session = scoped_session(sessionmaker(autocommit=True, autoflush=True, bind=engine))
 Base.query = db_session.query_property() #Dadurch hat jedes Base - Objekt (also auch ein Millionaire) ein Attribut query für Abfragen
 app = Flask(__name__)
+api = Api(app)
 
 def encode_base64(fName):
     with open(fName, 'rb') as file:
@@ -39,6 +50,30 @@ class Image(Base):
                 'img_base64' : self.img_base64,
                 'date' : self.date}
 
+class RImage(Resource):
+    def get(self, id):
+        img = Image.query.get(id)
+        return jsonify(img)
+
+    def put(self, id):
+        d = request.get_json(force=True)
+        print(d)
+        temp = Image(name=d['name'], img_base64=d['image'], date=d['date'])
+        db_session.add(temp)
+        db_session.flush()
+        return jsonify(temp)
+
+    def delete(self, id):
+        temp = Image.query.get(id)
+        if temp is None:
+            return jsonify({'message': 'object with id %d does not exist' % id})
+        db_session.delete(temp)
+        db_session.flush()
+        return jsonify({'message': '%d deleted' % id})
+
+
+api.add_resource(Image, '/image/<int:id>')
+
 @app.route('/')
 def index():
     str = '<h1> test </h1>\n'
@@ -59,5 +94,7 @@ def init_db(): # this function is not called from script, execute from python sh
     db_session.commit() #
 
 if __name__ == '__main__':
+    init_db()
+    api.run()
     Base.metadata.create_all(bind=engine)
     app.run()
