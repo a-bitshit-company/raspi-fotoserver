@@ -21,7 +21,7 @@ def decode_Base64(fName, data):
 if __name__ == '__main__':
 
     data = {'name' : 'test', 'image': encode_base64(PATH), 'date' : '29.02.2004'} #date aus exif auslesen?
-    response = requests.put('http://localhost:5000/img_meta/0' , json=data)
+    response = requests.put('http://localhost:5000/image/0' , json=data)
     print(response)
 
 
