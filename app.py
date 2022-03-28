@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask, jsonify, render_template
 from flask_restful import Resource
 from sqlalchemy import Column, Integer, Text, DateTime, Sequence
@@ -35,7 +37,7 @@ class Image(Base):
     id = Column(Integer, Sequence('seq_reg_id', start=1, increment=1),primary_key=True)
     name = Column(Text)
     img_base64 = Column(Text)
-    date = Column(DateTime)
+    date = Column(Text)
 
     def serialize(self):
         return {'id' : self.id,
@@ -51,7 +53,7 @@ class RImage(Resource):
 
     def put(self, id):
         d = request.get_json(force=True)
-        temp = Image(name=d['name'], img_base64=d['image'], date=d['date'])
+        temp = Image(name=d['name'], img_base64=d['image'], date=(d['date']))
         db_session.add(temp)
         db_session.flush()
         return temp.serialize()
@@ -64,8 +66,8 @@ class RImage(Resource):
         db_session.flush()
         return jsonify({'message': '%d deleted' % id})
 
-#api.add_resource(RImage, '/image/<int:id>')
-api.add_resource(RImage, '/image')
+api.add_resource(RImage, '/image/<int:id>')
+
 
 @app.route('/')
 def index():

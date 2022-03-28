@@ -1,4 +1,6 @@
 import base64
+
+import datetime as datetime
 import requests
 
 
@@ -19,12 +21,12 @@ def decode_Base64(fName, data):
 
 if __name__ == '__main__':
 
-    data = {'name' : 'lappen', 'image': encode_base64(PATH), 'date' : '29.02.2004'} #date aus exif auslesen?
-    response = requests.put('http://localhost:5000/image', json=data)
+    data = {'name' : 'lappen', 'image': encode_base64(PATH), 'date' : str(datetime.datetime(2020,5,17))} #date aus exif auslesen?
+    response = requests.put('http://localhost:5000/image/0', json=data)
     print(response)
 
 
-    '''response = requests.get('http://localhost:5000/image/0')
+    response = requests.get('http://localhost:5000/image/0')
     res_json = response.json()
     print(res_json)
-    decode_Base64('/tmp/test', res_json['data'])'''
+    #decode_Base64('/tmp/test', res_json['data'])
