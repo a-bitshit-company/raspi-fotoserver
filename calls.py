@@ -1,9 +1,8 @@
 import base64
 import requests
 
-from app import Image
 
-PATH = '/home/pi/data/img0'
+PATH = '/home/matteo/Pictures/maimais/nazishit.png'
 
 def encode_base64(fName):
     with open(fName, 'rb') as file:
@@ -20,12 +19,12 @@ def decode_Base64(fName, data):
 
 if __name__ == '__main__':
 
-    data = {'name' : 'test', 'image': encode_base64(PATH), 'date' : '29.02.2004'} #date aus exif auslesen?
-    response = requests.put('http://localhost:5000/img_meta/0' , json=data)
+    data = {'name' : 'lappen', 'image': encode_base64(PATH), 'date' : '29.02.2004'} #date aus exif auslesen?
+    response = requests.put('http://localhost:5000/image', json=data)
     print(response)
 
 
-    response = requests.get('http://localhost:5000/image/0')
+    '''response = requests.get('http://localhost:5000/image/0')
     res_json = response.json()
     print(res_json)
-    decode_Base64('/tmp/test', res_json['data'])
+    decode_Base64('/tmp/test', res_json['data'])'''
