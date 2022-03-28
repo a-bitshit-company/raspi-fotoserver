@@ -51,7 +51,6 @@ class RImage(Resource):
 
     def put(self, id):
         d = request.get_json(force=True)
-        print(d)
         temp = Image(name=d['name'], img_base64=d['image'], date=d['date'])
         db_session.add(temp)
         db_session.flush()
@@ -65,7 +64,8 @@ class RImage(Resource):
         db_session.flush()
         return jsonify({'message': '%d deleted' % id})
 
-api.add_resource(RImage, '/image/<int:id>')
+#api.add_resource(RImage, '/image/<int:id>')
+api.add_resource(RImage, '/image')
 
 @app.route('/')
 def index():
