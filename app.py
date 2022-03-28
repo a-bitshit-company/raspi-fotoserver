@@ -69,8 +69,9 @@ api.add_resource(RImage, '/image/<int:id>')
 
 @app.route('/')
 def index():
-    str = '<!DOCTYPE html>\n<html>\n<head>\n<title>Fotoserver</title>\n</head>\n<body>'
-    str += '<h1> Images </h1>\n'
+    str = '<!DOCTYPE html>\n<html>\n<head>\n<link href="static/style.css" rel="stylesheet" type="text/css" media="all">\n<title>Fotoserver</title>\n</head>\n<body>'
+
+    str += '<h1> FOTOS </h1>\n'
     str +='<div id="images">\n'
 
     for img in db_session.query(Image):
