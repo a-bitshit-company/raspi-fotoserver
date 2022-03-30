@@ -26,7 +26,7 @@ if __name__ == '__main__':
     print(response)
 
 
-    response = requests.get('http://localhost:5000/image/0')
+    response = requests.get('http://localhost:5000/image/1y')
     res_json = response.json()
     print(res_json)
     #decode_Base64('/tmp/test', res_json['data'])

@@ -22,7 +22,7 @@ Base = declarative_base()
 metadata = Base.metadata
 engine = create_engine('sqlite:///sqlite/fotoserver.sqlite3')
 db_session = scoped_session(sessionmaker(autocommit=True, autoflush=True, bind=engine))
-Base.query = db_session.query_property() #Dadurch hat jedes Base - Objekt (also auch ein Millionaire) ein Attribut query für Abfragen
+Base.query = db_session.query_property()
 app = Flask(__name__)
 api = Api(app)
 
@@ -92,7 +92,7 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 def init_db(): # this function is not called from script, execute from python shell to reset sqlite file
-    img = Image(id=0, name="htl_logo.png", img_base64=encode_base64(open("static/htl_logo.png", 'rb')), date=func.now())
+    img = Image(id=0, name="htl_logo.png", img_base64=encode_base64(open("static/htl_logo.png", 'rb')), date=str(func.now()))
     db_session.begin()
     db_session.add(img)
     db_session.commit()
