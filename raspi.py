@@ -23,9 +23,6 @@ def on_message(client, userdata, message):
         takePic()
         client.publish("pictures", encode_base64(PATH))
 
-
-
-
 client = mqtt.Client('raspi')
 client.connect('127.0.0.1') #ip von mosquitto broker
 client.subscribe("pictures")
