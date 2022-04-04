@@ -1,0 +1,26 @@
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>paho-test</groupId>
+    <artifactId>simple-call</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+    <name>simple-call</name>
+    <repositories>
+        <repository>
+            <id>Eclipse Paho Repo</id>
+            <url>
+                https://repo.eclipse.org/content/repositories/paho-releases/
+            </url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.paho</groupId>
+            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+    </dependencies>
+</project>
